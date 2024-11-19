@@ -1,19 +1,21 @@
 import { Router, Request, Response } from 'express';
 import { RoomController } from '../controllers/RoomController';
+import { RoomRepository } from '../repositories/RoomRepository';
 
-const router = Router();
-const roomController = new RoomController();
+const router = Router(); 
+const roomRepository = new RoomRepository();
+const roomController = new RoomController(roomRepository); 
 
 router.post('/', (req: Request, res: Response) => {
-  roomController.createRoom(req, res);
+  roomController.create(req, res);
 });
 
 router.put('/:id', (req: Request, res: Response) => {
-  roomController.updateRoom(req, res);
+  roomController.update(req, res);
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
-  roomController.deleteRoom(req, res);
+  roomController.delete(req, res);
 });
 
 export default router;

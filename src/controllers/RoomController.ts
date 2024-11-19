@@ -1,36 +1,45 @@
 import { Request, Response } from 'express';
+import { BaseController } from './BaseController';
 import { Room } from '../models/Room';
+import { RoomRepository } from '../repositories/RoomRepository';
 
-const rooms: Room[] = [];
+export class RoomController extends BaseController {
+  private roomRepository: RoomRepository;
 
-export class RoomController {
-  constructor() {
-    this.createRoom = this.createRoom.bind(this);
-    this.updateRoom = this.updateRoom.bind(this);
-    this.deleteRoom = this.deleteRoom.bind(this);
+  constructor(roomRepository: RoomRepository) {
+    super();
+    this.roomRepository = roomRepository;
   }
 
-  public createRoom(req: Request, res: Response) {
+  public create(req: Request, res: Response): void {
     const { id, name, capacity, organizationId } = req.body;
     const newRoom = new Room(id, name, capacity, organizationId);
-    rooms.push(newRoom);
-    res.status(201).json(newRoom);
+    this.roomRepository.addRoom(newRoom);
+    res.status(201).json(newRoom.toJSON());
   }
 
-  public updateRoom(req: Request, res: Response) {
+  public update(req: Request, res: Response): Response | void {
     const { id } = req.params;
-    const updatedData = req.body;
-    const room = rooms.find(room => room.id === id);
-    if (!room) return res.status(404).json({ message: 'Room not found' });
-    Object.assign(room, updatedData);
-    res.status(200).json(room);
+    const { name, capacity, organizationId } = req.body;
+    const room = this.roomRepository.findRoomById(id);
+    if (!room) {
+      return res.status(404).json({ message: 'Room not found' });
+    }
+
+    if (name) room.setName(name);
+    if (capacity) room.setCapacity(capacity);
+    if (organizationId) room.setOrganizationId(organizationId);
+
+    this.roomRepository.updateRoom(room);
+    res.status(200).json(room.toJSON());
   }
 
-  public deleteRoom(req: Request, res: Response) {
+  public delete(req: Request, res: Response): Response | void {
     const { id } = req.params;
-    const roomIndex = rooms.findIndex(room => room.id === id);
-    if (roomIndex === -1) return res.status(404).json({ message: 'Room not found' });
-    rooms.splice(roomIndex, 1);
+    const isDeleted = this.roomRepository.deleteRoom(id);
+    if (!isDeleted) {
+      return res.status(404).json({ message: 'Room not found' });
+    }
     res.status(204).send();
   }
 }
