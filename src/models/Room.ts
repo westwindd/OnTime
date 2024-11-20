@@ -1,8 +1,12 @@
-export class Room {
-  private id: string;
-  private name: string;
-  private capacity: number;
-  private organizationId: string;
+// src/models/Room.ts
+
+import { IRoom } from '../interfaces/IRoom';
+
+export class Room implements IRoom {
+  public id: string;
+  public name: string;
+  public capacity: number;
+  public organizationId: string;
 
   constructor(id: string, name: string, capacity: number, organizationId: string) {
     this.id = id;
@@ -11,35 +15,14 @@ export class Room {
     this.organizationId = organizationId;
   }
 
-  public getId(): string {
-    return this.id;
-  }
+  // public getId(): string {
+  //   return this.id;
+  // }
+  // public setId(id: string): void {
+  //   this.id = id;
+  // }
 
-  public getName(): string {
-    return this.name;
-  }
-
-  public setName(name: string): void {
-    this.name = name;
-  }
-
-  public getCapacity(): number {
-    return this.capacity;
-  }
-
-  public setCapacity(capacity: number): void {
-    this.capacity = capacity;
-  }
-
-  public getOrganizationId(): string {
-    return this.organizationId;
-  }
-
-  public setOrganizationId(organizationId: string): void {
-    this.organizationId = organizationId;
-  }
-
-  public toJSON() {
+  public toJSON(): IRoom {
     return {
       id: this.id,
       name: this.name,

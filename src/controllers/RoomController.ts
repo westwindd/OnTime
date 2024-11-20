@@ -1,45 +1,52 @@
+// src/controllers/RoomController.ts
+
 import { Request, Response } from 'express';
 import { BaseController } from './BaseController';
 import { Room } from '../models/Room';
-import { RoomRepository } from '../repositories/RoomRepository';
+import { IRoom } from '../interfaces/IRoom';
+import { IRoomRepository } from '../interfaces/IRoomRepository';
+import { roomRepository } from '../repositories';
 
-export class RoomController extends BaseController {
-  private roomRepository: RoomRepository;
-
-  constructor(roomRepository: RoomRepository) {
-    super();
-    this.roomRepository = roomRepository;
-  }
+export class RoomController {
+  constructor() {}
 
   public create(req: Request, res: Response): void {
     const { id, name, capacity, organizationId } = req.body;
     const newRoom = new Room(id, name, capacity, organizationId);
-    this.roomRepository.addRoom(newRoom);
-    res.status(201).json(newRoom.toJSON());
+
+    if (newRoom instanceof Room) {
+      roomRepository.addRoom(newRoom);
+      res.status(201).json(newRoom.toJSON());
+    } else {
+      res.status(400).json({ message: 'Invalid room data' });
+    }
   }
 
-  public update(req: Request, res: Response): Response | void {
+  public update(req: Request, res: Response): void {
     const { id } = req.params;
     const { name, capacity, organizationId } = req.body;
-    const room = this.roomRepository.findRoomById(id);
-    if (!room) {
-      return res.status(404).json({ message: 'Room not found' });
+    const room = roomRepository.findRoomById(id);
+
+    if (room instanceof Room) {
+      if (name !== undefined) room.name = name;
+      if (capacity !== undefined) room.capacity = capacity;
+      if (organizationId !== undefined) room.organizationId = organizationId;
+
+      roomRepository.updateRoom(room);
+      res.status(200).json(room.toJSON());
+    } else {
+      res.status(404).json({ message: 'Room not found' });
     }
-
-    if (name) room.setName(name);
-    if (capacity) room.setCapacity(capacity);
-    if (organizationId) room.setOrganizationId(organizationId);
-
-    this.roomRepository.updateRoom(room);
-    res.status(200).json(room.toJSON());
   }
 
-  public delete(req: Request, res: Response): Response | void {
+  public delete(req: Request, res: Response): void {
     const { id } = req.params;
-    const isDeleted = this.roomRepository.deleteRoom(id);
-    if (!isDeleted) {
-      return res.status(404).json({ message: 'Room not found' });
+    const isDeleted = roomRepository.deleteRoom(id);
+
+    if (isDeleted) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ message: 'Room not found' });
     }
-    res.status(204).send();
   }
 }

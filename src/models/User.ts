@@ -1,4 +1,8 @@
-export class User {
+// src/models/User.ts
+
+import { IUser } from '../interfaces/IUser';
+
+export class User implements IUser {
   public id: string;
   public name: string;
   public email: string;
@@ -20,5 +24,19 @@ export class User {
     this.password = password;
     this.role = role;
     this.teamId = teamId;
+  }
+
+  // public setPassword(password: string): void {
+  //   this.password = hashPassword(password);
+  // }
+
+  public toJSON(): Omit<IUser, 'password'> {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      role: this.role,
+      teamId: this.teamId,
+    };
   }
 }

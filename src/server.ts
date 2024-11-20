@@ -1,19 +1,17 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import userRoutes from './routes/userRoutes';
-import roomRoutes from './routes/roomRoutes';
-import { authorizeAdmin } from './middlewares/authMiddleware';
+// src/server.ts
 
-dotenv.config();
+import express from 'express';
+import roomRoutes from './routes/roomRoutes';
+import userRoutes from './routes/userRoutes';
+import bookingRoutes from './routes/bookingRoutes';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
+app.use('/rooms', roomRoutes);
 app.use('/users', userRoutes);
-app.use('/rooms', authorizeAdmin, roomRoutes);
+app.use('/bookings', bookingRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
