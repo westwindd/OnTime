@@ -34,7 +34,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
 
    **Exemplo:**
 
-   \`\`\`typescript
+   ```
    export class Person {
      public id: string;
      public name: string;
@@ -44,7 +44,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
        this.name = name;
      }
    }
-   \`\`\`
+   ```
 
 2. **Classe \`User\` (herda de \`Person\`):** Representa os usuários do sistema. Armazena informações como \`email\`, \`password\`, \`role\` e \`teamId\`.
 
@@ -55,7 +55,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
 
    **Exemplo:**
 
-   \`\`\`typescript
+  ```
    import { Person } from './Person';
 
    export class User extends Person {
@@ -79,13 +79,13 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
        this.teamId = teamId;
      }
    }
-   \`\`\`
+   ```
 
 3. **Classe \`TimeSlot\`:** Representa um intervalo de tempo com \`startTime\` e \`endTime\`, e métodos para manipulação de tempo.
 
    **Exemplo:**
 
-   \`\`\`typescript
+```
    export class TimeSlot {
      public startTime: Date;
      public endTime: Date;
@@ -104,8 +104,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
        return this.startTime < other.endTime && this.endTime > other.startTime;
      }
    }
-   \`\`\`
-
+```
 4. **Classe \`Booking\` (herda de \`TimeSlot\`):** Representa as reservas realizadas pelos usuários. Armazena detalhes como \`id\`, \`roomId\`, \`userId\`, além dos atributos herdados de \`TimeSlot\`.
 
    **Por que usei esta classe?**
@@ -115,7 +114,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
 
    **Exemplo:**
 
-   \`\`\`typescript
+```
    import { TimeSlot } from './TimeSlot';
 
    export class Booking extends TimeSlot {
@@ -138,13 +137,13 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
 
 
    }
-   \`\`\`
+   ```
 
 5. **Classe \`Resource\`:** Uma classe base que representa um recurso, contendo atributos como \`id\` e \`name\`.
 
    **Exemplo:**
 
-   \`\`\`typescript
+```
    export class Resource {
      public id: string;
      public name: string;
@@ -154,7 +153,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
        this.name = name;
      }
    }
-   \`\`\`
+   ```
 
 6. **Classe \`Room\` (herda de \`Resource\`):** Representa as salas disponíveis para reserva. Contém informações como \`capacity\` e \`organizationId\`.
 
@@ -165,7 +164,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
 
    **Exemplo:**
 
-   \`\`\`typescript
+```
    import { Resource } from './Resource';
 
    export class Room extends Resource {
@@ -183,8 +182,7 @@ As **classes** são a base da POO e as utilizei para representar as entidades pr
        this.organizationId = organizationId;
      }
    }
-   \`\`\`
-
+```
 ### 2. **Hierarquia**
 
 A hierarquia em POO permite criar relacionamentos de herança entre classes, promovendo reutilização de código e organização.
@@ -209,7 +207,7 @@ Protegi os dados internos das classes usando modificadores de acesso como \`priv
 
 **Exemplo na classe \`Room\`:**
 
-\`\`\`typescript
+```
 export class Room extends Resource {
   private capacity: number;
   private organizationId: string;
@@ -235,36 +233,16 @@ export class Room extends Resource {
 
   // Outros getters e setters
 }
-\`\`\`
-
-### 4. **Polimorfismo**
-
-Utilizei **polimorfismo** para permitir que objetos de diferentes classes sejam tratados como objetos de uma classe base comum. Isso é possível graças às hierarquias criadas.
-
-**Exemplo:**
-
-\`\`\`typescript
-function listResources(resources: Resource[]) {
-  resources.forEach((resource) => {
-    console.log(\`ID: \${resource.id}, Name: \${resource.name}\`);
-  });
-}
-
-const room = new Room('room1', 'Sala de Reunião', 10, 'org1');
-const equipment = new Equipment('equip1', 'Projetor', 'Audiovisual');
-
-listResources([room, equipment]);
-\`\`\`
-
+```
 Neste exemplo, \`Room\` e \`Equipment\` podem ser usados onde um \`Resource\` é esperado.
 
-### 5. **Injeção de Dependência**
+### 4. **Injeção de Dependência**
 
 Desacoplei as classes utilizando a injeção de dependência, permitindo que as dependências sejam fornecidas de fora da classe, em vez de serem criadas internamente.
 
 **Exemplo no \`BookingController\`:**
 
-\`\`\`typescript
+```
 import { Request, Response } from 'express';
 import { BookingRepository } from '../repositories/BookingRepository';
 
@@ -279,15 +257,15 @@ export class BookingController {
     // Uso do this.bookingRepository
   }
 }
-\`\`\`
+```
 
-### 6. **Singleton**
+### 5. **Singleton**
 
 Implementei os repositórios como **Singletons** para garantir que haja apenas uma instância de cada repositório em toda a aplicação, mantendo a consistência dos dados.
 
 **Exemplo:**
 
-\`\`\`typescript
+```
 // src/repositories/index.ts
 import { UserRepository } from './UserRepository';
 import { RoomRepository } from './RoomRepository';
@@ -296,8 +274,7 @@ import { BookingRepository } from './BookingRepository';
 export const userRepository = new UserRepository();
 export const roomRepository = new RoomRepository();
 export const bookingRepository = new BookingRepository();
-\`\`\`
-
+```
 ## Justificativa para o Uso de Classes
 
 Optei por usar classes porque:
