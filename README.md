@@ -193,7 +193,7 @@ A hierarquia em POO permite criar relacionamentos de herança entre classes, pro
 
 - **\`TimeSlot\` > \`Booking\`:** \`Booking\` herda de \`TimeSlot\`, reutilizando métodos de manipulação de tempo.
 
-- **\`Resource\` > \`Room\` e \`Equipment\`:** \`Room\` e \`Equipment\` herdam de \`Resource\`, compartilhando atributos comuns e adicionando suas próprias características.
+- **\`Resource\` > \`Room\`:** \`Room\` herdam de \`Resource\`, compartilhando atributos comuns e adicionando suas próprias características.
 
 **Por que utilizei estas hierarquias?**
 
@@ -234,7 +234,6 @@ export class Room extends Resource {
   // Outros getters e setters
 }
 ```
-Neste exemplo, \`Room\` e \`Equipment\` podem ser usados onde um \`Resource\` é esperado.
 
 ### 4. **Injeção de Dependência**
 
@@ -286,7 +285,7 @@ Optei por usar classes porque:
 
 ## Classificação dos Componentes
 
-- **Modelos (Models):** Representam as entidades do domínio (\`Person\`, \`User\`, \`Resource\`, \`Room\`, \`Equipment\`, \`TimeSlot\`, \`Booking\`).
+- **Modelos (Models):** Representam as entidades do domínio (\`Person\`, \`User\`, \`Resource\`, \`Room\`, \`TimeSlot\`, \`Booking\`).
 - **Interfaces:** Definem contratos para os modelos e repositórios.
 - **Repositórios (Repositories):** Gerenciam o armazenamento e a recuperação dos dados.
 - **Controladores (Controllers):** Lidam com as requisições HTTP e a lógica de negócio.
