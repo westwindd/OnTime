@@ -4,7 +4,7 @@ import { IBookingRepository } from '../interfaces/IBookingRepository';
 import { Booking } from '../models/Booking';
 
 export class BookingRepository implements IBookingRepository {
-  private bookings: Booking[] = []; // Change to Booking[]
+  private bookings: Booking[] = [];
 
   public addBooking(booking: Booking): void {
     if (booking instanceof Booking) {

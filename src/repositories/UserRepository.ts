@@ -9,7 +9,6 @@ export class UserRepository implements IUserRepository {
   public addUser(user: User): void {
     if (user instanceof User) {
       this.users.push(user);
-
     } else {
       throw new Error('Invalid user object');
     }

@@ -38,7 +38,6 @@ export class BookingController {
       return;
     }
 
-    console.log('userId', userId);
     const user = userRepository.findUserById(userId);
     if (!user) {
       res.status(404).json({ message: 'User not found' });
@@ -88,10 +87,20 @@ export class BookingController {
     res.status(200).json(bookings.map(booking => booking.toJSON()));
   };
 
-  private checkBookingConflict(roomId: string, startTime: Date, endTime: Date): boolean {
+  private checkBookingConflict(
+    roomId: string,
+    startTime: Date,
+    endTime: Date
+  ): boolean {
+    const newBookingSlot = { startTime, endTime };
     const bookings = bookingRepository.findBookingsByRoomId(roomId);
-    return bookings.some(booking =>
-      (startTime < booking.endTime) && (endTime > booking.startTime)
-    );
+
+    return bookings.some((booking) => {
+      return this.overlapsWith(newBookingSlot, booking);
+    });
+  }
+
+  private overlapsWith(slot1: { startTime: Date, endTime: Date }, slot2: Booking): boolean {
+    return slot1.startTime < slot2.endTime && slot1.endTime > slot2.startTime;
   }
 }

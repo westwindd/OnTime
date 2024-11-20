@@ -6,6 +6,6 @@ export interface IUser {
     email: string;
     password: string;
     role: string;
-    teamId?: string;
+    teamId: string | null;
   }
   

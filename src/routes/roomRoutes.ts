@@ -5,7 +5,7 @@ import { RoomRepository } from '../repositories/RoomRepository';
 import { RoomController } from '../controllers/RoomController';
 
 const router = Router();
-const roomRepository = new RoomRepository(); // Concrete implementation
+const roomRepository = new RoomRepository();
 const roomController = new RoomController();
 
 router.post('/', (req, res) => roomController.create(req, res));

@@ -1,11 +1,12 @@
+// src/models/Booking.ts
+
+import { TimeSlot } from './TimeSlot';
 import { IBooking } from '../interfaces/IBooking';
 
-export class Booking implements IBooking {
+export class Booking extends TimeSlot implements IBooking {
   public id: string;
   public roomId: string;
   public userId: string;
-  public startTime: Date;
-  public endTime: Date;
 
   constructor(
     id: string,
@@ -14,11 +15,10 @@ export class Booking implements IBooking {
     startTime: Date,
     endTime: Date
   ) {
+    super(startTime, endTime); 
     this.id = id;
     this.roomId = roomId;
     this.userId = userId;
-    this.startTime = startTime;
-    this.endTime = endTime;
   }
 
   public toJSON(): IBooking {
